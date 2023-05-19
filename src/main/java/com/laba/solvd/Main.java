@@ -164,16 +164,5 @@ public class Main {
         System.out.println(harvardUniversity.equals(harvardUniversity));
         System.out.println(harvardCollege.hashCode());
 
-        logger.info(Person.getTotalPeople());
-        harvardCollege.printInfo();
-        harvardCollege.graduateStudent(doe, gates);
-        harvardBusinessSchool.graduateMBAStudent(gates);
-        harvardLawSchool.printCampusInfo();
-        harvardBusinessSchool.printCampusInfo();;
-        schoolOfEngineering.printCampusInfo();
-        harvardBusinessSchool.printProfessorsFieldOfStudy();
-        harvardLawSchool.printProfessorsFieldOfStudy();
-        schoolOfEngineering.printProfessorsFieldOfStudy();
-
     }
 }

@@ -164,7 +164,8 @@ public class Main {
         System.out.println(harvardUniversity.equals(harvardUniversity));
         System.out.println(harvardCollege.hashCode());
 
-        // CREATING NOT SO MUCH FUN THINGS IN FACT NOT FUN AT ALL
+
+        // ADDING FUN STUFF HERE
 
     }
 }

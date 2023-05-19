@@ -4,6 +4,8 @@ import java.io.*;
 import java.time.Year;
 
 import com.laba.solvd.enums.*;
+import com.laba.solvd.exceptions.NoFacultiesException;
+import com.laba.solvd.exceptions.NoStudentsException;
 import com.laba.solvd.faculty.Faculty;
 import com.laba.solvd.faculty.FacultyOfArtsAndSciences;
 import com.laba.solvd.faculty.FacultyOfBusiness;
@@ -14,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.laba.solvd.university.University;
 
 import java.util.*;
+import java.util.function.*;
 
 
 public class Main {
@@ -21,7 +24,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // read from file
-            File sampleFile = new File("src/main/resources/sample.txt");
+        File sampleFile = new File("src/main/resources/sample.txt");
 
         try (Scanner scanner = new Scanner(sampleFile);
              FileWriter writer = new FileWriter("src/main/resources/sample2.txt")) {
@@ -31,7 +34,7 @@ public class Main {
             Set<String> uniqueWords = new HashSet<>(Arrays.asList(sampleWords));
             int count = uniqueWords.size();
             writer.write(Integer.toString(count));
-        } catch(IOException e) {
+        } catch (IOException e) {
             logger.error("An error occurred while processing the file.", e);
         }
 
@@ -149,22 +152,43 @@ public class Main {
 
 
         University harvardUniversity = new University("Harvard University", "Cambridge, Massachusetts", Year.of(1636), faculties);
-
         System.out.println(harvardUniversity);
-
-        // lambdas
-        logger.info(harvardUniversity.numOfFacultiesFunction.apply(harvardUniversity));
-        harvardUniversity.printInfoConsumer.accept(harvardUniversity);
-        logger.info(harvardUniversity.studentSupplier.get());
-        logger.info(harvardUniversity.hasStudentsPredicate.test(harvardUniversity));
-
 
         // equals, hashcode
         System.out.println(harvardUniversity.equals(harvardCollege));
         System.out.println(harvardUniversity.equals(harvardUniversity));
         System.out.println(harvardCollege.hashCode());
 
-        // TESTING GIT HUB
+        // lambdas
+        Function<University, Integer> numOfFacultiesFunction = university -> {
+            try {
+                return university.getNumFaculties();
+            } catch (NoFacultiesException e) {
+                return 0;
+            }
+        };
+
+        Consumer<University> printInfoConsumer = university -> {
+            university.printInfo();
+        };
+
+        Supplier<Student> studentSupplier = () -> {
+            return new Student("John Doe", 17, Gender.MALE, AcademicYear.FRESHMAN);
+        };
+
+        Predicate<University> hasStudentsPredicate = university -> {
+            try {
+                int numStudents = university.getNumOfStudents();
+                return numStudents > 0;
+            } catch (NoStudentsException nse) {
+                return true;
+            }
+        };
+
+        UnaryOperator<University> capitalizeName = university -> {
+            String capitalizedName = university.getName().toUpperCase();
+            return new University(capitalizedName, university.getLocation(), university.getFoundingYear(), university.getFaculties());
+        };
 
     }
 }

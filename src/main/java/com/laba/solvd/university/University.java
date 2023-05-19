@@ -13,6 +13,7 @@ import com.laba.solvd.enums.Gender;
 import org.apache.log4j.Logger;
 
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.*;
@@ -32,6 +33,7 @@ public final class University implements IPrintInfo, IGetName, IGetLocationAndYe
         this.faculties = faculties;
     }
 
+
     @Override
     public final String getName() {
         return name;
@@ -45,6 +47,10 @@ public final class University implements IPrintInfo, IGetName, IGetLocationAndYe
     @Override
     public final Year getFoundingYear() {
         return foundingYear;
+    }
+
+    public List<Faculty> getFaculties() {
+        return faculties;
     }
 
     public void addFaculty(Faculty faculty) {
@@ -213,30 +219,4 @@ public final class University implements IPrintInfo, IGetName, IGetLocationAndYe
         }
 
     }
-
-    // lambdas
-    public Function<University, Integer> numOfFacultiesFunction = university -> {
-        try {
-            return university.getNumFaculties();
-        } catch (NoFacultiesException e) {
-            return 0;
-        }
-    };
-
-    public Consumer<University> printInfoConsumer = university -> {
-        university.printInfo();
-    };
-
-    public Supplier<Student> studentSupplier = () -> {
-        return new Student("John Doe", 17, Gender.MALE, AcademicYear.FRESHMAN);
-    };
-
-    public Predicate<University> hasStudentsPredicate = university -> {
-        try {
-            int numStudents = university.getNumOfStudents();
-            return numStudents > 0;
-        } catch (NoStudentsException nse) {
-            return true;
-        }
-    };
 }

@@ -18,7 +18,7 @@ public class Student extends Person {
 
     @Override
     public int getAge() throws UnderageStudentsException {
-        if(age < 18) {
+        if (age < 18) {
             throw new UnderageStudentsException("The student is a minor. There is not an age requirement for applying to Harvard, though applicants are expected to have some secondary school experience.");
         } else {
             return age;
@@ -38,15 +38,15 @@ public class Student extends Person {
     }
 
     public String getAcademicYearName() {
-       return academicYear.getYearName();
+        return academicYear.getYearName();
     }
 
     @Override
     public void printInfo() throws UnderageStudentsException {
         try {
-            logger.info(getName() + " is a " + getAge() + " years old " +  getAcademicYearName() + ".");
+            logger.info(getName() + " is a " + getAge() + " years old " + getAcademicYearName() + ".");
         } catch (UnderageStudentsException e) {
-            logger.info(getName() + " is a " + age + " years old " +  getAcademicYearName() + ".");
+            logger.info(getName() + " is a " + age + " years old " + getAcademicYearName() + ".");
         }
     }
 

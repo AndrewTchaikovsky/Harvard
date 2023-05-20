@@ -32,6 +32,7 @@ out/
 src (1).iml
 target/
 
+<<<<<<< HEAD
 # General
 .DS_Store
 .AppleDouble
@@ -58,4 +59,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+=======
+>>>>>>> 8113375a0cf1557e58a010397a22afdde9d3b597
 

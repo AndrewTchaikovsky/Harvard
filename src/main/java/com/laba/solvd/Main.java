@@ -190,5 +190,7 @@ public class Main {
             return new University(capitalizedName, university.getLocation(), university.getFoundingYear(), university.getFaculties());
         };
 
+        // testing github
+
     }
 }

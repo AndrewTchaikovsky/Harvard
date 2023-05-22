@@ -1,5 +1,6 @@
 package com.laba.solvd.faculty;
 
+import com.laba.solvd.customlinkedlist.CustomLinkedList;
 import com.laba.solvd.exceptions.UnderageStudentsException;
 import com.laba.solvd.interfaces.*;
 import com.laba.solvd.exceptions.NoAlumniException;
@@ -21,7 +22,7 @@ public abstract class Faculty implements IPrintInfo, IGetName, IGetLocationAndYe
     protected Year foundingYear;
     protected Campus campus;
     protected PersonList professors;
-    protected List<Student> students;
+    protected CustomLinkedList<Student> students;
     protected List<Alumnus> alumni;
     private static int totalFaculties;
 
@@ -35,7 +36,7 @@ public abstract class Faculty implements IPrintInfo, IGetName, IGetLocationAndYe
         this.location = location;
         this.campus = campus;
         this.professors = professors;
-        this.students = students;
+        this.students = new CustomLinkedList<>();
         this.alumni = alumni;
         totalFaculties++;
     }
@@ -88,7 +89,7 @@ public abstract class Faculty implements IPrintInfo, IGetName, IGetLocationAndYe
         return students;
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(CustomLinkedList<Student> students) {
         this.students = students;
     }
 
@@ -109,44 +110,44 @@ public abstract class Faculty implements IPrintInfo, IGetName, IGetLocationAndYe
 
     // add and remove students and staff
 
-    public void hireProfessor(Professor professor) {
+    public void hireProfessor(Professor professor, PersonList professors) {
         professors.add(professor);
         logger.info("New professor hired. Total number of professors: " + professors.size());
     }
 
-    public void layoffProfessor(Professor professor) {
+    public void layoffProfessor(Professor professor, PersonList professors) {
         professors.remove(professor);
         logger.info("Professor laid off. Total number of professors: " + professors.size());
     }
 
-    public void enrollStudent(Student student) throws UnderageStudentsException {
+    public void enrollStudent(Student student, CustomLinkedList<Student> students) {
         try {
             int age = student.getAge();
-            students.add(student);
             logger.info("New student enrolled. Total number of students: " + students.size());
         } catch (UnderageStudentsException e) {
-            students.add(student);
             logger.info("New underage student enrolled. Total number of students: " + students.size());
         }
-    }
+        students.add(student);
+        }
 
-    public void expelStudent(Student student) {
+
+    public void expelStudent(Student student, CustomLinkedList<Student> students) {
         students.remove(student);
         logger.info("Student expelled. Total number of students: " + students.size());
     }
 
-    public void graduateStudent(Student student, Alumnus alumnus) {
+    public void graduateStudent(Student student, Alumnus alumnus, CustomLinkedList<Student> students, List<Alumnus> alumni) {
         students.remove(student);
         alumni.add(alumnus);
         logger.info("Student graduated. Total number of students: " + students.size() + ". Total number of alumni: " + alumni.size());
     }
 
-    public void addAlumnus(Alumnus alumnus) {
+    public void addAlumnus(Alumnus alumnus, List<Alumnus> alumni) {
         alumni.add(alumnus);
         logger.info("New alumnus added. Total number of alumni: " + alumni.size());
     }
 
-    public void removeAlumnus(Alumnus alumnus) {
+    public void removeAlumnus(Alumnus alumnus, List<Alumnus> alumni) {
         alumni.remove(alumnus);
         logger.info("Alumnus removed. Total number of alumni: " + alumni.size());
     }

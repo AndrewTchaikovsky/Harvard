@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.function.*;
 
 public final class University implements IPrintInfo, IGetName, IGetLocationAndYear, IGetNumOfStudents {
-    private static final Logger logger = Logger.getLogger(Faculty.class);
+    private static final Logger logger = Logger.getLogger(University.class);
     private final String name;
     private final String location;
     private final Year foundingYear;

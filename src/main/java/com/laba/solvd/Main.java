@@ -3,6 +3,7 @@ package com.laba.solvd;
 import java.io.*;
 import java.time.Year;
 
+import com.laba.solvd.customlinkedlist.CustomLinkedList;
 import com.laba.solvd.enums.*;
 import com.laba.solvd.exceptions.NoFacultiesException;
 import com.laba.solvd.exceptions.NoStudentsException;
@@ -44,57 +45,70 @@ public class Main {
         classesKaelin.add("Molecular and Cellular Basis of Cancer");
         classesKaelin.add("Hematology/Oncology Journal Club");
         Professor kaelin = new Professor("William Kaelin", 65, classesKaelin, EmploymentStatus.FULL_TIME);
-        kaelin.printInfo();
-        kaelin.teachClass("Math");
-        Person.printPersonName(() -> kaelin.name);
-        logger.info(Professor.getMaxClasses());
+//        kaelin.teachClass("Math");
+//        Person.printPersonName(() -> kaelin.name);
+//        logger.info(Professor.getMaxClasses());
 
 
         Set<String> classesMelton = new HashSet<>();
         classesMelton.add("Molecular and Cellular Biology of Development");
         classesMelton.add("Stem Cell and Regenerative Biology");
         Professor melton = new Professor("Douglas A. Melton", 69, classesMelton, EmploymentStatus.FULL_TIME);
-        melton.printInfo();
 
         // students
         Student doe = new Student("John Doe", 17, Gender.MALE, AcademicYear.FRESHMAN);
-        doe.printInfo();
         Student won = new Student("Noah Won", 18, Gender.NON_BINARY, AcademicYear.JUNIOR);
-        won.printInfo();
         Student jane = new Student("Jane Doe", 18, Gender.FEMALE, AcademicYear.SOPHOMORE);
-        jane.printInfo();
-        jane.printPronoun(jane);
-        Person.printPersonName(() -> doe.name);
+//        Person.printPersonName(() -> doe.name);
 
 
         // alumni
         Alumnus kennedy = new Alumnus("John F. Kennedy", 46, Year.of(1940), Degree.BACHELORS);
-        kennedy.printInfo();
         Alumnus gates = new Alumnus("Bill Gates", 67, Year.of(1977), null);
-        gates.printInfo();
-        Person.printPersonName(() -> gates.name);
+//        Person.printPersonName(() -> gates.name);
 
         // faculties
 
         PersonList engineeringProfessor = new PersonList();
 //        engineeringProfessor.add(kaelin);
-        List<Student> engineeringStudents = new ArrayList<>();
-//        engineeringStudents.add(doe);
+        CustomLinkedList<Student> engineeringStudents = new CustomLinkedList<>();
+        engineeringStudents.add(doe);
         List<Alumnus> engineeringAlumni = new ArrayList<>();
 //        engineeringAlumni.add(kennedy);
 
         FacultyOfArtsAndSciences schoolOfEngineering = new FacultyOfArtsAndSciences(4599, "Harvard John A. Paulson School of Engineering and Applied Sciences",
                 "Cambridge, Massachusetts", Year.of(1847), Campus.CAMBRIDGE, engineeringProfessor, engineeringStudents, engineeringAlumni);
 
-        schoolOfEngineering.printInfo();
-        schoolOfEngineering.hireProfessor(melton);
-        schoolOfEngineering.enrollStudent(won);
-        schoolOfEngineering.addAlumnus(gates);
-        schoolOfEngineering.printInfo();
+//        schoolOfEngineering.printInfo();
+//        schoolOfEngineering.hireProfessor(melton);
+        schoolOfEngineering.enrollStudent(won, engineeringStudents);
+        engineeringStudents.printInfo();
+//        logger.info(engineeringStudents.isEmpty());
+//        logger.info(engineeringStudents.contains(won));
+
+        Iterator<Student> iterator = engineeringStudents.iterator();
+        while (iterator.hasNext()) {
+            Student student = iterator.next();
+            student.printInfo();
+        }
+
+//        logger.info(engineeringStudents.add(doe));
+//        logger.info(engineeringStudents.get(0));
+//        logger.info(engineeringStudents.set(0,won));
+//        logger.info(engineeringStudents.get(0));
+//        engineeringStudents.add(1,doe);
+//        logger.info(engineeringStudents.get(1));
+//        logger.info(engineeringStudents.remove(1));
+//        logger.info(engineeringStudents.remove(doe));
+//        logger.info(engineeringStudents);
+
+
+
+
 
         PersonList collegeProfessor = new PersonList();
         collegeProfessor.add(kaelin);
-        List<Student> collegeStudent = new ArrayList<>();
+        CustomLinkedList<Student> collegeStudent = new CustomLinkedList<>();
         collegeStudent.add(doe);
         List<Alumnus> collegeAlumnus = new ArrayList<>();
         collegeAlumnus.add(kennedy);
@@ -103,15 +117,15 @@ public class Main {
                 "Cambridge, Massachusetts", Year.of(1636), Campus.CAMBRIDGE, collegeProfessor, collegeStudent, collegeAlumnus);
 
         harvardCollege.printInfo();
-        harvardCollege.hireProfessor(melton);
-        harvardCollege.enrollStudent(won);
-        harvardCollege.addAlumnus(gates);
+        harvardCollege.hireProfessor(melton, collegeProfessor);
+        harvardCollege.enrollStudent(won, collegeStudent);
+        harvardCollege.addAlumnus(gates, collegeAlumnus);
         harvardCollege.printInfo();
 
 
         PersonList lawProfessor = new PersonList();
 //        lawProfessor.add(kaelin);
-        List<Student> lawStudent = new ArrayList<>();
+        CustomLinkedList<Student> lawStudent = new CustomLinkedList<>();
 //        lawStudent.add(doe);
         List<Alumnus> lawAlumnus = new ArrayList<>();
 //        lawAlumnus.add(kennedy);
@@ -120,15 +134,15 @@ public class Main {
                 "Harvard Law School", "Cambridge, Massachusetts", Year.of(1817), Campus.CAMBRIDGE, lawProfessor, lawStudent, lawAlumnus);
 
         harvardLawSchool.printInfo();
-        harvardLawSchool.hireProfessor(melton);
-        harvardLawSchool.enrollStudent(won);
-        harvardLawSchool.addAlumnus(gates);
+        harvardLawSchool.hireProfessor(melton, lawProfessor);
+        harvardLawSchool.enrollStudent(won, lawStudent);
+        harvardLawSchool.addAlumnus(gates, lawAlumnus);
         harvardLawSchool.printInfo();
 
 //
         PersonList businessProfessor = new PersonList();
 //        businessProfessor.add(kaelin);
-        List<Student> businessStudent = new ArrayList<>();
+        CustomLinkedList<Student> businessStudent = new CustomLinkedList<>();
 //        businessStudent.add(doe);
         List<Alumnus> businessAlumnus = new ArrayList<>();
 //        businessAlumnus.add(kennedy);
@@ -137,10 +151,10 @@ public class Main {
                 "Allston, Massachusetts", Year.of(1908), Campus.ALLSTON, businessProfessor, businessStudent, businessAlumnus);
 
         harvardBusinessSchool.printInfo();
-        harvardBusinessSchool.hireProfessor(melton);
-        harvardBusinessSchool.addAlumnus(gates);
+        harvardBusinessSchool.hireProfessor(melton, businessProfessor);
+        harvardBusinessSchool.addAlumnus(gates, businessAlumnus);
         harvardBusinessSchool.printInfo();
-        harvardBusinessSchool.enrollStudent(doe);
+        harvardBusinessSchool.enrollStudent(doe, businessStudent);
         harvardBusinessSchool.printInfo();
 
 
@@ -189,8 +203,6 @@ public class Main {
             String capitalizedName = university.getName().toUpperCase();
             return new University(capitalizedName, university.getLocation(), university.getFoundingYear(), university.getFaculties());
         };
-
-        // testing github 2
 
     }
 }

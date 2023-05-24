@@ -29,7 +29,13 @@ public class CustomLinkedList<T> implements List<T>, IGetName, IPrintInfo {
 
     @Override
     public void printInfo() {
-        logger.info("The " + getName() + " has " + size + " elements.");
+        int count = 0;
+        Node<T> current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        logger.info("The " + getName() + " has " + count + " elements.");
     }
 
     @Override
@@ -261,6 +267,22 @@ public class CustomLinkedList<T> implements List<T>, IGetName, IPrintInfo {
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         throw new UnsupportedOperationException("This method is not supported in this custom implementation.");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node<T> current = head;
+        while (current != null) {
+            sb.append(current.data);
+            if (current.next != null) {
+                sb.append(", ");
+            }
+            current = current.next;
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
 }

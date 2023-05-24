@@ -200,16 +200,10 @@ public final class University implements IPrintInfo, IGetName, IGetLocationAndYe
     }
 
     public int countSchoolFaculties() {
-        int count = 0;
-        Iterator<Faculty> iterator = faculties.iterator();
-        while (iterator.hasNext()) {
-            Faculty faculty = iterator.next();
-            if (faculty.getName().toLowerCase().contains("school")) {
-                count++;
-            }
+        return (int) faculties.stream()
+                .filter(faculty -> faculty.getName().toLowerCase().contains("school"))
+                .count();
         }
-        return count;
-    }
 
     public void printSchoolFaculties() {
         if (countSchoolFaculties() == 0) {

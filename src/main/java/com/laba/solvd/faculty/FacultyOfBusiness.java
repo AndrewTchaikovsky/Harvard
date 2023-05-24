@@ -1,5 +1,6 @@
 package com.laba.solvd.faculty;
 
+import com.laba.solvd.customlinkedlist.CustomLinkedList;
 import com.laba.solvd.exceptions.NoAlumniException;
 
 import com.laba.solvd.exceptions.NoProfessorsException;
@@ -15,7 +16,7 @@ import java.util.List;
 public class FacultyOfBusiness extends Faculty {
     private int MBAStudents;
 
-    public FacultyOfBusiness(int mbaStudents, String name, String location, Year foundingYear, Campus campus, PersonList professors, List<Student> students, List<Alumnus> alumni) {
+    public FacultyOfBusiness(int mbaStudents, String name, String location, Year foundingYear, Campus campus, PersonList professors, CustomLinkedList<Student> students, List<Alumnus> alumni) {
         super(name, location, foundingYear, campus, professors, students, alumni);
         this.MBAStudents = mbaStudents;
     }

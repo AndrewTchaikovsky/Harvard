@@ -1,6 +1,7 @@
 package com.laba.solvd.faculty;
 
 import com.laba.solvd.customlinkedlist.CustomLinkedList;
+import com.laba.solvd.enums.Gender;
 import com.laba.solvd.exceptions.UnderageStudentsException;
 import com.laba.solvd.interfaces.*;
 import com.laba.solvd.exceptions.NoAlumniException;
@@ -11,6 +12,7 @@ import com.laba.solvd.enums.Campus;
 import org.apache.log4j.Logger;
 
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -30,13 +32,13 @@ public abstract class Faculty implements IPrintInfo, IGetName, IGetLocationAndYe
         totalFaculties = 0;
     }
 
-    public Faculty(String name, String location, Year foundingYear, Campus campus, PersonList professors, List<Student> students, List<Alumnus> alumni) {
+    public Faculty(String name, String location, Year foundingYear, Campus campus, PersonList professors, CustomLinkedList<Student> students, List<Alumnus> alumni) {
         this.name = name;
         this.foundingYear = foundingYear;
         this.location = location;
         this.campus = campus;
         this.professors = professors;
-        this.students = new CustomLinkedList<>();
+        this.students = students;
         this.alumni = alumni;
         totalFaculties++;
     }
@@ -123,11 +125,12 @@ public abstract class Faculty implements IPrintInfo, IGetName, IGetLocationAndYe
     public void enrollStudent(Student student, CustomLinkedList<Student> students) {
         try {
             int age = student.getAge();
+            students.add(student);
+            this.students.add(student);
             logger.info("New student enrolled. Total number of students: " + students.size());
         } catch (UnderageStudentsException e) {
             logger.info("New underage student enrolled. Total number of students: " + students.size());
         }
-        students.add(student);
         }
 
 
@@ -203,4 +206,48 @@ public abstract class Faculty implements IPrintInfo, IGetName, IGetLocationAndYe
         return totalFaculties;
     }
 
+    public void printProfessorsInfo() {
+        professors
+                .stream()
+                .forEach(professor -> {
+                    try {
+                        professor.printInfo();
+                    } catch (UnderageStudentsException ignored) {}
+                });
+    }
+
+    public void printAdultStudentsGender() {
+        students
+                .stream()
+                .filter(student -> {
+                    try {
+                        return student.getAge() > 18;
+                    } catch (UnderageStudentsException ignored) {
+                        return false;
+                    }
+                })
+                .forEach(student -> logger.info(student.getGender()));
+    }
+
+    public void printAllAlumniAge() {
+        alumni
+                .stream()
+                .forEach(alumnus -> logger.info(alumnus.getAge()));
+    }
+
+    public void getAverageMaleStudentAge() {
+        double average = students
+                .stream()
+                .filter(student -> student.getGender() == Gender.MALE)
+                .mapToInt(student -> {
+                    try {
+                        return student.getAge();
+                    } catch (UnderageStudentsException ignore) {
+                        return 0;
+                    }
+                })
+                .average()
+                .orElse(0.0);
+        logger.info(average);
+    }
 }

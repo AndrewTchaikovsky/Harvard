@@ -1,12 +1,12 @@
 package com.laba.solvd.multithreading;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
-public class Multithreading {
-    public static void main(String[] args) throws InterruptedException {
+public class MultithreadMain {
+    public static void main(String[] args) {
 
         // implementing thread and runnable
         for (int i = 0; i < 2; i++) {
@@ -26,7 +26,11 @@ public class Multithreading {
         ExecutorService threadPool = Executors.newFixedThreadPool(7);
 
         for (int i = 0; i < 5; i++) {
-            threadPool.execute(() -> {
+        /* to implement without CompletableFuture, replace the following line with
+        threadPool.execute(() -> {
+        and remove , threadPool at the end of the block
+        */
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                 try {
                     Connection connection = connectionPool.getConnection();
                     System.out.println("Got connection: " + connection);
@@ -35,12 +39,16 @@ public class Multithreading {
                     System.out.println("Released connection: " + connection);
                 } catch (InterruptedException ignored) {
                 }
-            });
+            }, threadPool);
         }
 
         Semaphore semaphore = new Semaphore(2);
         for (int i = 0; i < 2; i++) {
-            threadPool.execute(() -> {
+        /* to implement without CompletableFuture, replace the following line with
+        threadPool.execute(() -> {
+        and remove , threadPool at the end of the block
+        */
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                 try {
                     semaphore.acquire();
                     Connection connection = connectionPool.getConnection();
@@ -50,8 +58,10 @@ public class Multithreading {
                     System.out.println("Released connection: " + connection);
                 } catch (InterruptedException ignored) {
                 } semaphore.release();
-            });
+            }, threadPool);
         }
         threadPool.shutdown();
+
+        connectionPool.printConnectionCount();
     }
 }
